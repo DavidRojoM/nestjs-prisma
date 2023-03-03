@@ -16,7 +16,7 @@ model User {
   email        String        @unique
   password     String
   userDetails  UserDetail?
-  Socials      Social[]
+  socials      Social[]
   transactions Transaction[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @default(now()) @updatedAt
