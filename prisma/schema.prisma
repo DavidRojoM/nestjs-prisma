@@ -11,15 +11,16 @@ datasource db {
 }
 
 model User {
-  id           Int           @id @default(autoincrement())
+  id           Int            @id @default(autoincrement())
   nickname     String
-  email        String        @unique
+  email        String         @unique
   password     String
   userDetails  UserDetail?
   socials      Social[]
   transactions Transaction[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @default(now()) @updatedAt
+  hospitals    UserHospital[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @default(now()) @updatedAt
 }
 
 enum Gender {
@@ -55,6 +56,24 @@ model Transaction {
   amount    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
-  User      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
   userId    Int
+}
+
+model Hospital {
+  id      Int            @id @default(autoincrement())
+  extId   String         @unique
+  name    String
+  address String?
+  users   UserHospital[]
+}
+
+model UserHospital {
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  hospital   Hospital @relation(fields: [hospitalId], references: [id])
+  hospitalId Int
+
+  @@id([userId, hospitalId])
 }
